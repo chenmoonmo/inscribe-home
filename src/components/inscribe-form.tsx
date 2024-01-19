@@ -16,7 +16,7 @@ import {
   useSendTransaction,
   useWaitForTransaction,
 } from "wagmi";
-import { toHex } from "viem";
+import { bytesToHex, toHex } from "viem";
 import { useContracts } from "@/hooks/use-contracts";
 import { inscriptionABI } from "@/abis";
 import { useTransactionDialog } from "./transaction-provider";
@@ -30,6 +30,11 @@ export const InscribeForm: FC<{ p: string }> = ({ p }) => {
   const [max, setMax] = useState<string>("");
   const [lim, setLim] = useState<string>("");
   const [amt, setAmt] = useState<string>("");
+
+  const { acceptedFiles, getRootProps, getInputProps, inputRef } = useDropzone({
+    maxFiles: 1,
+    multiple: false,
+  });
 
   const contractInfo = {
     address: inscription,
@@ -59,8 +64,6 @@ export const InscribeForm: FC<{ p: string }> = ({ p }) => {
       },
     ],
   });
-
-  console.log(pInfo?.map((item) => item.result));
 
   const [registedProtocols, ptype, pAddr, rf] = useMemo(() => {
     if (!pInfo) return [[], Protocols.InsFT, undefined, []];
@@ -113,11 +116,6 @@ export const InscribeForm: FC<{ p: string }> = ({ p }) => {
     () => (ticksString as string)?.split(",") ?? [],
     [ticksString]
   );
-
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
-    maxFiles: 1,
-    multiple: false,
-  });
 
   const { data, sendTransaction } = useSendTransaction({
     onSuccess: (data) => {
@@ -213,11 +211,43 @@ export const InscribeForm: FC<{ p: string }> = ({ p }) => {
     setMax("");
     setLim("");
     setAmt("");
+    // reomve file
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
   };
 
-  console.log(acceptedFiles);
+  const handleConfirm = async () => {
+    const obj: any = {
+      p: p,
+      op: type === Actions.deploy ? "deploy" : "mint",
+      tick: tick,
+    };
 
-  const handleConfirm = () => {
+    if (type === Actions.deploy) {
+      obj.max = max;
+      if (ptype !== Protocols.NFT) {
+        obj.lim = lim;
+      } else {
+        const arrayBuffer = await acceptedFiles[0].arrayBuffer();
+        obj.file = bytesToHex(new Uint8Array(arrayBuffer));
+      }
+    } else {
+      if (ptype !== Protocols.NFT) {
+        obj.amt = amt;
+      }
+    }
+    rf?.forEach((item) => {
+      obj[item] = "";
+    });
+    const keys = Object.getOwnPropertyNames(obj);
+
+    const jsonString = stringify(obj, function (a, b) {
+      return keys.indexOf(a.key) > keys.indexOf(b.key) ? 1 : -1;
+    });
+
+    console.log(jsonString);
+
     showDialog({
       title: "Transaction Confirmation",
       content: "Please confirm the transaction in your wallet",
@@ -226,7 +256,7 @@ export const InscribeForm: FC<{ p: string }> = ({ p }) => {
     sendTransaction({
       to: inscription,
       value: BigInt(0),
-      data: toHex(json),
+      data: toHex(jsonString),
     });
   };
 

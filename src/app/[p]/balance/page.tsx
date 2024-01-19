@@ -4,9 +4,13 @@ import { useContracts } from "@/hooks/use-contracts";
 import { formatAmount } from "@/utils/format";
 import { Button, Select, Table, TextFieldInput } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
-import { useContractRead } from "wagmi";
+import { Address, useContractRead } from "wagmi";
 
-export default function Page({ params: { p:currentP } }: { params: { p: string } }) {
+export default function Page({
+  params: { p: currentP },
+}: {
+  params: { p: string };
+}) {
   const { inscription } = useContracts();
   const [addr, setAddr] = useState("");
   const [p, setP] = useState(currentP);
@@ -54,7 +58,7 @@ export default function Page({ params: { p:currentP } }: { params: { p: string }
       },
     ],
     functionName: "getUserBalance",
-    args: [tick, addr],
+    args: [tick, addr as Address],
   });
 
   console.log(pAddr, balance);

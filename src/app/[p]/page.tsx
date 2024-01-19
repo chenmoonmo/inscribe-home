@@ -2,7 +2,7 @@
 import { InscribeForm } from "@/components/inscribe-form";
 import NoSSR from "react-no-ssr";
 
-export function Page({
+export default function Page({
   params: { p },
 }: {
   params: {
@@ -17,5 +17,3 @@ export function Page({
     </NoSSR>
   );
 }
-
-export default Page;

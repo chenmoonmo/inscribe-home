@@ -1,5 +1,3 @@
-export function Page() {
+export default function Page() {
   return <main></main>;
 }
-
-export default Page;

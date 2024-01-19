@@ -5,12 +5,25 @@
 html,
 body * {
   box-sizing: border-box;
+  position: relative;
+  min-width: 0;
 }
 
-input,
-button {
-  all: unset;
-  box-sizing: border-box;
+body {
+  min-height: 100dvh;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
 }
 
 .radix-themes {

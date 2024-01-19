@@ -1,11 +1,12 @@
+import { Address } from "viem";
 import { goerli } from "viem/chains";
 
 export const CONTRACTS: {
   [chainId: number]: {
-    LiquidityLaunchpad: string;
+    inscription: Address;
   };
 } = {
   [goerli.id]: {
-    LiquidityLaunchpad: process.env.NEXT_PUBLIC_GOERLI_LIQ_LAUNCHPAD as string,
+    inscription: process.env.NEXT_PUBLIC_GOERLI_INSCRIPTION as Address,
   },
 };

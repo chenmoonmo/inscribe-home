@@ -18,7 +18,7 @@ import {
   useSendTransaction,
   useWaitForTransaction,
 } from "wagmi";
-import { bytesToHex, toHex } from "viem";
+import { bytesToHex, toBytes, toHex } from "viem";
 import { useContracts } from "@/hooks/use-contracts";
 import { inscriptionABI } from "@/abis";
 import { useTransactionDialog } from "@/components/transaction-provider";
@@ -55,6 +55,8 @@ export default function Page({
   const [max, setMax] = useState<string>("");
   const [lim, setLim] = useState<string>("");
   const [amt, setAmt] = useState<string>("");
+
+  const [uploadFile, setUploadFile] = useState<File | undefined>(undefined);
 
   const { acceptedFiles, getRootProps, getInputProps, inputRef } = useDropzone({
     maxFiles: 1,
@@ -140,6 +142,94 @@ export default function Page({
     return [registedProtocols, ptype, pAddr, rf];
   }, [pInfo, type]);
 
+  const { data: t1 } = useContractReads({
+    contracts: [
+      {
+        address: pAddr,
+        abi: [
+          {
+            inputs: [
+              {
+                internalType: "string",
+                name: "protocol",
+                type: "string",
+              },
+              {
+                internalType: "string",
+                name: "tick",
+                type: "string",
+              },
+              {
+                internalType: "string",
+                name: "field",
+                type: "string",
+              },
+            ],
+            name: "getFieldData",
+            outputs: [
+              {
+                internalType: "string",
+                name: "",
+                type: "string",
+              },
+            ],
+            stateMutability: "view",
+            type: "function",
+          },
+        ],
+        functionName: "getFieldData",
+        args: [p, tick, "file"],
+      },
+      {
+        address: pAddr,
+        abi: [
+          {
+            inputs: [
+              {
+                internalType: "string",
+                name: "protocol",
+                type: "string",
+              },
+              {
+                internalType: "string",
+                name: "tick",
+                type: "string",
+              },
+              {
+                internalType: "string",
+                name: "field",
+                type: "string",
+              },
+            ],
+            name: "getFieldData",
+            outputs: [
+              {
+                internalType: "string",
+                name: "",
+                type: "string",
+              },
+            ],
+            stateMutability: "view",
+            type: "function",
+          },
+        ],
+        functionName: "getFieldData",
+        args: [p, tick, "filetype"],
+      },
+    ],
+    enabled: type === Actions.mint && ptype === Protocols.NFT && !!tick,
+    onSuccess: (data) => {
+      const filedata = data[0].result as string;
+      const filetype = (data[1].result as string) || "image/png";
+      if (filedata && filetype) {
+        const bytes = toBytes(filedata);
+        const blob = new Blob([bytes], { type: filetype });
+        const file = new File([blob], "file");
+        setUploadFile(file);
+      }
+    },
+  });
+
   const { data: ticksString, refetch: refetchTicksString } = useContractRead({
     address: pAddr,
     abi: [
@@ -204,6 +294,15 @@ export default function Page({
         setMax("");
         setLim("");
         setAmt("");
+        setExtranlParams((pre) => {
+          const newParams = [...pre];
+          newParams.forEach((item) => {
+            if (item.type === "custom") {
+              item.value = "";
+            }
+          });
+          return newParams;
+        });
         hideDialog();
       }, 2000);
     },
@@ -272,12 +371,9 @@ export default function Page({
     }
 
     extranlParams.map((item) => {
-      if (item.type === "custom") {
-        obj[item.key] = item.value;
-      } else {
-        // TODO: 占位符
-        obj[item.type] = item.type;
-      }
+      let key = item.type === "custom" ? item.key : item.type;
+      let value = item.type === "custom" ? item.value : item.type;
+      obj[key] = value;
     });
 
     const keys = Object.getOwnPropertyNames(obj);
@@ -293,6 +389,15 @@ export default function Page({
     setMax("");
     setLim("");
     setAmt("");
+    setExtranlParams((pre) => {
+      const newParams = [...pre];
+      newParams.forEach((item) => {
+        if (item.type === "custom") {
+          item.value = "";
+        }
+      });
+      return newParams;
+    });
     // reomve file
     if (inputRef.current) {
       inputRef.current.value = "";
@@ -301,9 +406,9 @@ export default function Page({
 
   const handleConfirm = async () => {
     const obj: any = {
-      p: p,
+      p,
       op: type === Actions.deploy ? "deploy" : "mint",
-      tick: tick,
+      tick,
     };
 
     if (type === Actions.deploy) {
@@ -313,6 +418,7 @@ export default function Page({
       } else {
         const arrayBuffer = await acceptedFiles[0].arrayBuffer();
         obj.file = bytesToHex(new Uint8Array(arrayBuffer));
+        obj.filetype = acceptedFiles[0].type;
       }
     } else {
       if (ptype !== Protocols.NFT) {
@@ -384,7 +490,10 @@ export default function Page({
                 variant="classic"
                 size="3"
                 value={tick}
-                onChange={(e) => setTick(e.target.value)}
+                onChange={(e) => {
+                  setUploadFile(undefined);
+                  setTick(e.target.value);
+                }}
               />
               {type === Actions.deploy && ptype === Protocols.NFT && (
                 <>
@@ -502,7 +611,11 @@ export default function Page({
                 you are able to inscribe
               </div>
               {type === Actions.mint && ptype === Protocols.NFT && (
-                <div className="col-span-2 w-40 h-40 bg-violet-100 rounded-md"></div>
+                <div className="relative col-span-2 w-40 h-40 bg-violet-100 rounded-md overflow-hidden">
+                  {uploadFile && (
+                    <Image alt="" src={URL.createObjectURL(uploadFile)} fill />
+                  )}
+                </div>
               )}
               <div className="col-span-2 border-2 border-primary rounded-md p-4 tracking-wider break-all">
                 {json}

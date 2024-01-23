@@ -5,12 +5,12 @@
 html,
 body * {
   box-sizing: border-box;
-  position: relative;
   min-width: 0;
 }
 
 body {
   min-height: 100dvh;
+  font-family: Popins, sans-serif;
 }
 
 h1,
@@ -28,5 +28,5 @@ p {
 
 .radix-themes {
   --default-font-family: Poppins, sans-serif;
-  color: #e0e0e0 !important;
+  color: #000 !important;
 }

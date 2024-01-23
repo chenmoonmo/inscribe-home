@@ -1,6 +1,6 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
-import { atom,useAtomValue } from "jotai";
+import { atom, useAtomValue } from "jotai";
 import { memo, useMemo } from "react";
 import { createPortal } from "react-dom";
 
@@ -103,7 +103,7 @@ export const TransactionDialog = memo(() => {
       {dialog && (
         <motion.div
           initial={{ backgroundColor: "rgba(0,0,0,0)" }}
-          animate={{ backgroundColor: "rgba(0,0,0,0.6)" }}
+          animate={{ backgroundColor: "rgba(0,0,0,0.3)" }}
           exit={{ backgroundColor: "rgba(0,0,0,0)" }}
           className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-60 z-40"
         >
@@ -111,16 +111,16 @@ export const TransactionDialog = memo(() => {
             initial={{ scale: 0.5, opacity: 0, translateX: "0" }}
             animate={{ scale: 1, opacity: 1, translateX: "-50%" }}
             exit={{ scale: 0.5, opacity: 0, translateX: "0" }}
-            className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[426px] h-[64px] rounded-xl bg-[#5e6169] flex items-stretch overflow-hidden"
+            className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[426px] h-[64px] rounded-xl bg-white border-2 border-solid border-[#1F2127] flex items-stretch overflow-hidden"
           >
             <div className="flex items-center justify-center bg-[#2781ff] aspect-square">
               {currentIcon}
             </div>
             <div className="flex-auto flex flex-col px-[30px] justify-center font-poppins">
-              <h1 className="text-base font-bold  text-white">
+              <h1 className="text-base font-bold  text-[#262930]">
                 {dialog.title}
               </h1>
-              <div className="text-xs text-[#bcc3d6]">{dialog.content}</div>
+              <div className="text-xs text-[#262930]">{dialog.content}</div>
             </div>
           </motion.div>
         </motion.div>

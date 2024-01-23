@@ -34,13 +34,14 @@ export const Header = ({ p }: { p: string }) => {
               key={item.name}
               href={`/${p}${item.href}`}
               className={classnames(
-                "font-medium hover:text-white",
+                "font-extrabold text-lg hover:text-[var(--accent-9)]",
                 (item.href === "/" && pathname.endsWith(p)) ||
                   (item.href !== "" && pathname.endsWith(item.href))
-                  ? "text-white"
-                  : "text-secondary",
+                  ? "text-[var(--accent-9)]"
+                  : "text-[#1F2127]",
                 {
                   "pointer-events-none": item.href === "",
+                  "text-gray-400": item.href === "",
                 }
               )}
             >
@@ -49,9 +50,7 @@ export const Header = ({ p }: { p: string }) => {
           ))}
         </div>
       </div>
-      <div className="flex items-center gap-3">
-        <ConnectKitButton />
-      </div>
+      <ConnectKitButton />
     </header>
   );
 };

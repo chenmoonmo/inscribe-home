@@ -2,8 +2,9 @@
 import { inscriptionABI } from "@/abis";
 import { useContracts } from "@/hooks/use-contracts";
 import { formatAmount } from "@/utils/format";
-import { Button, Select, Table, TextFieldInput } from "@radix-ui/themes";
+import { Select, Table, TextFieldInput } from "@radix-ui/themes";
 import { useMemo, useState } from "react";
+import NoSSR from "react-no-ssr";
 import { Address, useContractRead } from "wagmi";
 
 export default function Page({
@@ -36,6 +37,11 @@ export default function Page({
         inputs: [
           {
             internalType: "string",
+            name: "protocol",
+            type: "string",
+          },
+          {
+            internalType: "string",
             name: "tick",
             type: "string",
           },
@@ -58,10 +64,9 @@ export default function Page({
       },
     ],
     functionName: "getUserBalance",
-    args: [tick, addr as Address],
+    args: [p, tick, addr as Address],
+    enabled: !!addr && !!p && !!tick,
   });
-
-  console.log(pAddr, balance);
 
   const registedProtocols = useMemo(() => {
     const arr = registedProtocolString?.split(",") ?? [];
@@ -69,54 +74,60 @@ export default function Page({
   }, [registedProtocolString]);
 
   return (
-    <main className="flex flex-col items-center px-5 pt-20 gap-10">
-      <div className="flex items-center gap-2">
-        <TextFieldInput
-          placeholder="Wallet Address"
-          size="3"
-          className="!w-[400px]"
-          value={addr}
-          onChange={(e) => setAddr(e.target.value)}
-        />
-        <Select.Root size="3" value={p} onValueChange={setP}>
-          <Select.Trigger />
-          <Select.Content position="popper">
-            {registedProtocols?.map((item) => (
-              <Select.Item key={item} value={item}>
-                {item}
-              </Select.Item>
-            ))}
-          </Select.Content>
-        </Select.Root>
-        <TextFieldInput
-          placeholder="Tick"
-          size="3"
-          className="!w-[120px]"
-          value={tick}
-          onChange={(e) => setTick(e.target.value)}
-        />
-        {/* <Button size="3">Confirm</Button> */}
-      </div>
-      <Table.Root className="w-[1200px]">
-        <Table.Header>
-          <Table.Row>
-            <Table.ColumnHeaderCell>Wallet Address</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>p</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Tick</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Balance</Table.ColumnHeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {pAddr && tick && addr && !!balance && (
+    <NoSSR>
+      <main className="flex flex-col items-center px-5 pt-20 gap-10">
+        <div className="flex items-center gap-2">
+          <TextFieldInput
+            variant="classic"
+            placeholder="Wallet Address"
+            size="3"
+            className="!w-[400px]"
+            value={addr}
+            onChange={(e) => setAddr(e.target.value)}
+          />
+          <Select.Root size="3" value={p} onValueChange={setP}>
+            <Select.Trigger variant="surface" />
+            <Select.Content position="popper" variant="soft">
+              {registedProtocols?.map((item) => (
+                <Select.Item key={item} value={item}>
+                  {item}
+                </Select.Item>
+              ))}
+            </Select.Content>
+          </Select.Root>
+          <TextFieldInput
+            variant="classic"
+            placeholder="Tick"
+            size="3"
+            className="!w-[120px]"
+            value={tick}
+            onChange={(e) => setTick(e.target.value)}
+          />
+          {/* <Button size="3">Confirm</Button> */}
+        </div>
+        <Table.Root className="w-[1200px]">
+          <Table.Header>
             <Table.Row>
-              <Table.RowHeaderCell>{addr}</Table.RowHeaderCell>
-              <Table.Cell>{p}</Table.Cell>
-              <Table.Cell>{tick}</Table.Cell>
-              <Table.Cell>{formatAmount(balance.toString())}</Table.Cell>
+              <Table.ColumnHeaderCell>Wallet Address</Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell>p</Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell>Tick</Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell>Balance</Table.ColumnHeaderCell>
             </Table.Row>
-          )}
-        </Table.Body>
-      </Table.Root>
-    </main>
+          </Table.Header>
+          <Table.Body>
+            {pAddr && tick && addr && !!balance ? (
+              <Table.Row>
+                <Table.RowHeaderCell>{addr}</Table.RowHeaderCell>
+                <Table.Cell>{p}</Table.Cell>
+                <Table.Cell>{tick}</Table.Cell>
+                <Table.Cell>{formatAmount(balance.toString())}</Table.Cell>
+              </Table.Row>
+            ) : (
+              <Table.Row></Table.Row>
+            )}
+          </Table.Body>
+        </Table.Root>
+      </main>
+    </NoSSR>
   );
 }

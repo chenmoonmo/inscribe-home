@@ -18,15 +18,13 @@ export const Providers = React.memo(({ children }: ProviderProps) => {
   return (
     <WagmiConfig config={config}>
       <ConnectKitProvider
-        mode="dark"
+        mode="light"
+        theme="nouns"
         customTheme={{
-          "--ck-connectbutton-background": "#1F2127",
-          "--ck-connectbutton-border-radius": "6px",
-          "--ck-connectbutton-box-shadow": "inset 0 0 0 1px #363A45",
-          "--ck-connectbutton-color": "#737884",
+          "--ck-overlay-background": "rgba(0,0,0,0.3)",
         }}
       >
-        <Theme appearance="dark" accentColor="blue">
+        <Theme appearance="light" accentColor="violet">
           <TransactionDialogProvider>{children}</TransactionDialogProvider>
         </Theme>
       </ConnectKitProvider>

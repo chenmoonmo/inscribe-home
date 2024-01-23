@@ -7,17 +7,17 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        system: "#1F2127",
+        system: "#EBEBEB",
         secondary: "#9699A3"
       },
       borderWidth: {
         px: "1px",
       },
       borderColor: {
-        primary: "#313235",
+        primary: "#6E6E6E",
       },
       textColor: {
-        primary: "#e0e0e0",
+        primary: "#000",
         secondary: "#737884",
       },
       fontFamily: {

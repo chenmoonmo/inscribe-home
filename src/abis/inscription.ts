@@ -110,8 +110,9 @@ export const inscriptionABI = [
     type: "event",
   },
   {
-    stateMutability: "nonpayable",
+    stateMutability: "payable",
     type: "fallback",
+    payable: true,
   },
   {
     inputs: [
@@ -131,6 +132,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [
@@ -150,6 +152,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [
@@ -169,6 +172,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [
@@ -188,6 +192,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [],
@@ -201,6 +206,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [
@@ -210,7 +216,7 @@ export const inscriptionABI = [
         type: "bytes",
       },
     ],
-    name: "_rf",
+    name: "_spop",
     outputs: [
       {
         internalType: "bytes",
@@ -220,6 +226,32 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes",
+        name: "",
+        type: "bytes",
+      },
+      {
+        internalType: "bytes",
+        name: "",
+        type: "bytes",
+      },
+    ],
+    name: "_spoprf",
+    outputs: [
+      {
+        internalType: "bytes",
+        name: "",
+        type: "bytes",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
   },
   {
     inputs: [
@@ -239,6 +271,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [
@@ -258,6 +291,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [],
@@ -271,6 +305,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [],
@@ -284,6 +319,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [],
@@ -297,6 +333,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [],
@@ -310,6 +347,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [],
@@ -323,10 +361,11 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [],
-    name: "actionRf",
+    name: "actionSpop",
     outputs: [
       {
         internalType: "bytes",
@@ -336,6 +375,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [
@@ -373,6 +413,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [
@@ -392,6 +433,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [
@@ -416,6 +458,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [],
@@ -429,6 +472,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [],
@@ -442,6 +486,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [
@@ -461,6 +506,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [],
@@ -556,6 +602,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [],
@@ -569,6 +616,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [
@@ -588,6 +636,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [
@@ -665,6 +714,19 @@ export const inscriptionABI = [
     inputs: [
       {
         internalType: "string",
+        name: "mData",
+        type: "string",
+      },
+    ],
+    name: "test",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
         name: "protocolStr",
         type: "string",
       },
@@ -679,6 +741,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [],
@@ -692,6 +755,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [
@@ -711,6 +775,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [
@@ -730,6 +795,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [
@@ -749,6 +815,7 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
   },
   {
     inputs: [
@@ -768,5 +835,56 @@ export const inscriptionABI = [
     ],
     stateMutability: "view",
     type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes",
+        name: "protocol",
+        type: "bytes",
+      },
+      {
+        internalType: "bytes",
+        name: "action",
+        type: "bytes",
+      },
+    ],
+    name: "getActionRequireField",
+    outputs: [
+      {
+        internalType: "bytes",
+        name: "",
+        type: "bytes",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "protocol",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "action",
+        type: "string",
+      },
+    ],
+    name: "getActionRequireFieldStr",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
   },
 ] as const;

@@ -392,7 +392,7 @@ export default function Page({
                   <div
                     {...getRootProps({
                       className:
-                        "flex flex-col items-center justify-center h-[140px] bg-gray-800 rounded-md gap-1 cursor-pointer py-10",
+                        "flex flex-col items-center justify-center h-[140px] bg-violet-50 hover:bg-violet-100 rounded-md gap-1 cursor-pointer py-10",
                     })}
                   >
                     <input {...getInputProps()} />
@@ -502,7 +502,7 @@ export default function Page({
                 you are able to inscribe
               </div>
               {type === Actions.mint && ptype === Protocols.NFT && (
-                <div className="col-span-2 w-40 h-40 bg-gray-800 rounded-md"></div>
+                <div className="col-span-2 w-40 h-40 bg-violet-100 rounded-md"></div>
               )}
               <div className="col-span-2 border-2 border-primary rounded-md p-4 tracking-wider break-all">
                 {json}

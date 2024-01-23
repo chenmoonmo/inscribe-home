@@ -392,7 +392,7 @@ export default function Page({
                   <div
                     {...getRootProps({
                       className:
-                        "flex flex-col items-center justify-center h-[140px] bg-violet-50 hover:bg-violet-100 rounded-md gap-1 cursor-pointer py-10",
+                        "relative flex flex-col items-center justify-center h-[140px] bg-violet-50 hover:bg-violet-100 rounded-md gap-1 cursor-pointer py-10",
                     })}
                   >
                     <input {...getInputProps()} />

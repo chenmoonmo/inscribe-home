@@ -56,7 +56,7 @@ export default function Page({
   const [lim, setLim] = useState<string>("");
   const [amt, setAmt] = useState<string>("");
 
-  const [uploadFile, setUploadFile] = useState<File | undefined>(undefined);
+  const [uploadFile, setUploadFile] = useState<Blob | undefined>(undefined);
 
   const { acceptedFiles, getRootProps, getInputProps, inputRef } = useDropzone({
     maxFiles: 1,
@@ -142,7 +142,7 @@ export default function Page({
     return [registedProtocols, ptype, pAddr, rf];
   }, [pInfo, type]);
 
-  const { data: t1 } = useContractReads({
+  useContractReads({
     contracts: [
       {
         address: pAddr,
@@ -224,8 +224,7 @@ export default function Page({
       if (filedata && filetype) {
         const bytes = toBytes(filedata);
         const blob = new Blob([bytes], { type: filetype });
-        const file = new File([blob], "file");
-        setUploadFile(file);
+        setUploadFile(blob);
       }
     },
   });
@@ -612,9 +611,31 @@ export default function Page({
               </div>
               {type === Actions.mint && ptype === Protocols.NFT && (
                 <div className="relative col-span-2 w-40 h-40 bg-violet-100 rounded-md overflow-hidden">
-                  {uploadFile && (
-                    <Image alt="" src={URL.createObjectURL(uploadFile)} fill />
-                  )}
+                  {uploadFile &&
+                    (uploadFile.type.includes("image") ? (
+                      <Image
+                        alt=""
+                        src={URL.createObjectURL(uploadFile)}
+                        fill
+                      />
+                    ) : uploadFile.type.includes("video") ? (
+                      <video
+                        autoPlay
+                        muted
+                        loop
+                        src={URL.createObjectURL(uploadFile)}
+                        className="h-[140px] object-contain rounded-md"
+                      />
+                    ) : (
+                      // download
+                      <a
+                        className="h-[140px] flex items-center justify-center text-gray-400"
+                        download={`file.${uploadFile.type.split("/")[1]}`}
+                        href={URL.createObjectURL(uploadFile)}
+                      >
+                        {`file.${uploadFile.type.split("/")[1]}`}
+                      </a>
+                    ))}
                 </div>
               )}
               <div className="col-span-2 border-2 border-primary rounded-md p-4 tracking-wider break-all">

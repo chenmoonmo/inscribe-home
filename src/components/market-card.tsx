@@ -12,6 +12,7 @@ import { useContracts } from "@/hooks/use-contracts";
 import { toHex } from "viem";
 import { useSWRConfig } from "swr";
 import { useParams } from "next/navigation";
+import { useModal } from "connectkit";
 
 type MarketCardProps<T = boolean> = {
   orderInfo: T extends false
@@ -27,11 +28,12 @@ type MarketCardProps<T = boolean> = {
 
 export const MarketCard = memo(
   ({ orderInfo, hiddenActions = false }: MarketCardProps) => {
-    const { address } = useAccount();
     const { p, tick } = useParams<{
       p: string;
       tick: string;
     }>();
+    const { isConnected, address } = useAccount();
+    const { setOpen } = useModal();
 
     const { showDialog, hideDialog } = useTransactionDialog();
     const { mutate } = useSWRConfig();
@@ -149,9 +151,17 @@ export const MarketCard = memo(
                     </Button>
                   </ListDialog>
                 </>
-              ) : (
+              ) : isConnected ? (
                 <Button className="w-24" variant="classic" onClick={handleBuy}>
                   Buy
+                </Button>
+              ) : (
+                <Button
+                  variant="classic"
+                  color="indigo"
+                  onClick={() => setOpen(true)}
+                >
+                  Connect Wallet
                 </Button>
               )}
             </div>

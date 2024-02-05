@@ -11,6 +11,7 @@ import { useParams } from "next/navigation";
 import useSWR, { useSWRConfig } from "swr";
 import { OrderType, TickInfoType } from "@/type/marketplace";
 import { useTransactionDialog } from "./transaction-provider";
+import { useModal } from "connectkit";
 
 export const ListDialog: FC<{
   children: ReactNode;
@@ -19,7 +20,8 @@ export const ListDialog: FC<{
   const { mutate } = useSWRConfig();
   const { p, tick } = useParams<{ p: string; tick: string }>();
   const { inscription } = useContracts();
-  const { address } = useAccount();
+  const { isConnected, address } = useAccount();
+  const { setOpen: setWalletModalOpen } = useModal();
   const { showDialog, hideDialog } = useTransactionDialog();
 
   const [open, setOpen] = useState(false);
@@ -75,7 +77,7 @@ export const ListDialog: FC<{
         type: "function",
       },
     ],
-    args: [p, tick, address],
+    args: [p, tick, address!],
   });
 
   const { data: tickInfo } = useSWR(
@@ -114,7 +116,7 @@ export const ListDialog: FC<{
       status: "loading",
     });
 
-    let newOrderId;
+    let newOrderId: number;
 
     if (!orderInfo) {
       await fetch(
@@ -266,7 +268,7 @@ export const ListDialog: FC<{
           <label className="flex flex-col gap-1">
             <div className="flex justify-between text-secondary font-medium text-sm">
               <span>Selling Amount</span>
-              <span>Balance: {String(balance)} </span>
+              <span>Balance: {(balance as bigint)?.toString() ?? "-"} </span>
             </div>
             <TextFieldInput
               size="3"
@@ -316,15 +318,26 @@ export const ListDialog: FC<{
                 : "-"}
             </div>
           </div>
-          <Button
-            disabled={confirmButtonDisabled}
-            size="3"
-            className="w-full !mt-5"
-            variant="classic"
-            onClick={handleList}
-          >
-            Confirm
-          </Button>
+          {isConnected ? (
+            <Button
+              disabled={confirmButtonDisabled}
+              size="3"
+              className="w-full !mt-5"
+              variant="classic"
+              onClick={handleList}
+            >
+              Confirm
+            </Button>
+          ) : (
+            <Button
+              size="3"
+              className="w-full !mt-5"
+              variant="classic"
+              onClick={() => setWalletModalOpen(true)}
+            >
+              Connect Wallet
+            </Button>
+          )}
         </div>
       </Dialog.Content>
     </Dialog.Root>

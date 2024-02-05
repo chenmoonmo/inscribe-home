@@ -21,7 +21,8 @@
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-no-ssr": "^1.1.0",
-    "viem": "~1.16.4",
+    "swr": "^2.2.4",
+    "viem": "^1.21.4",
     "wagmi": "^1.4.3"
   },
   "devDependencies": {

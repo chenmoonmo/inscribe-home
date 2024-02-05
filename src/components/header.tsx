@@ -3,6 +3,7 @@ import classnames from "classnames";
 import { ConnectKitButton } from "connectkit";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useCallback } from "react";
 
 const Navs = [
   {
@@ -15,7 +16,7 @@ const Navs = [
   },
   {
     name: "Marketplace",
-    href: "",
+    href: "/marketplace",
   },
   {
     name: "Balance",
@@ -25,6 +26,18 @@ const Navs = [
 
 export const Header = ({ p }: { p: string }) => {
   const pathname = usePathname();
+
+  const getIsActiveLink = useCallback(
+    (href: string) => {
+      if (href === "/") {
+        return pathname === `/${p}`;
+      } else {
+        return pathname.split(`/${p}`)[1].startsWith(href);
+      }
+    },
+    [p, pathname]
+  );
+
   return (
     <header className="flex items-center justify-between h-20 px-5">
       <div className="flex items-center">
@@ -35,8 +48,7 @@ export const Header = ({ p }: { p: string }) => {
               href={`/${p}${item.href}`}
               className={classnames(
                 "font-extrabold text-lg hover:text-[var(--accent-9)]",
-                (item.href === "/" && pathname.endsWith(p)) ||
-                  (item.href !== "" && pathname.endsWith(item.href))
+                getIsActiveLink(item.href)
                   ? "text-[var(--accent-9)]"
                   : "text-[#1F2127]",
                 {

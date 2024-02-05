@@ -46,9 +46,9 @@ const ICONS = {
           gradientUnits="userSpaceOnUse"
         >
           <stop offset={0.419} stopColor="#fff" />
-          <stop offset={0.504} stopColor="#D2DFEF" />
-          <stop offset={0.695} stopColor="#608EC6" />
-          <stop offset={0.755} stopColor="#2781ff" />
+          <stop offset={0.504} stopColor="#ded2ef" />
+          <stop offset={0.695} stopColor="#9660c6" />
+          <stop offset={0.755} stopColor="#b727ff" />
         </linearGradient>
         <clipPath id="prefix__clip0_3_2">
           <path fill="#fff" d="M0 0h26v26H0z"></path>
@@ -113,7 +113,7 @@ export const TransactionDialog = memo(() => {
             exit={{ scale: 0.5, opacity: 0, translateX: "0" }}
             className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[426px] h-[64px] rounded-xl bg-white border-2 border-solid border-[#1F2127] flex items-stretch overflow-hidden"
           >
-            <div className="flex items-center justify-center bg-[#2781ff] aspect-square">
+            <div className="flex items-center justify-center bg-[#6E56CF] aspect-square">
               {currentIcon}
             </div>
             <div className="flex-auto flex flex-col px-[30px] justify-center font-poppins">

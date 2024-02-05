@@ -96,7 +96,9 @@ export const MarketCard = memo(
         .then((res) => res.json())
         .then((res) => res.order_info as string);
 
+      // TODO: 转换可能是多余
       const inscriptionInfo = JSON.parse(inscriptionJSON);
+
       const keys = Object.getOwnPropertyNames(inscriptionInfo);
 
       const jsonString = stringify(inscriptionInfo, function (a, b) {
@@ -104,7 +106,7 @@ export const MarketCard = memo(
       });
 
       console.log(inscriptionJSON, inscriptionInfo, jsonString);
-
+      
       showDialog({
         title: "Transaction Confirmation",
         content: "Please confirm the transaction in your wallet",
@@ -126,7 +128,7 @@ export const MarketCard = memo(
           <div className="text-2xl font-semibold">
             {orderInfo.sell_amount ? formatPrice(orderInfo.sell_amount) : "-"}
           </div>
-          <div className="font-medium">
+          <div className="font-medium text-center">
             {orderInfo.price ? formatPrice(orderInfo.price) : "-"} ETH/
             {orderInfo.tick}
           </div>

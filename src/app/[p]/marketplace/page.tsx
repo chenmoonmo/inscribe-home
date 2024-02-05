@@ -36,7 +36,7 @@ export default function Page({
 
   return (
     <main className="flex flex-col items-center pt-20 gap-8">
-      <Heading size="8">The brc20 Marketplace</Heading>
+      <Heading size="8">The {p} Marketplace</Heading>
       <Table.Root className="w-[1200px]">
         <Table.Header>
           <Table.Row>
